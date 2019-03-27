@@ -1,1 +1,1 @@
-A python library for accessing IGEL's IMI API
+A python library for accessing IGEL's IMI
