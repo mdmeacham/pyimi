@@ -103,8 +103,7 @@ class IMI:
         self.verify = verify
         self.url_host_port = 'https://' + server + ':' + str(port)
         self.headers = {'content-type': 'application/json'}
-        self.session_id = self.make_request(requests.post, end_of_url='/umsapi/v3/login', auth=HTTPBasicAuth(user, password))['message']
-        self.headers = {'Cookie': self.session_id, 'content-type': 'application/json'}
+        self.headers['Cookie'] = self.make_request(requests.post, end_of_url='/umsapi/v3/login', auth=HTTPBasicAuth(user, password))['message']
 
     def make_request(self, requests_method=None, data=None, end_of_url=None, auth=None):
         url_string = self.url_host_port + end_of_url

@@ -46,7 +46,7 @@ print("A smaller set of device info includes:", device1.info)
 # Get more detailed information
 device1.get_info(detailed=True)
 # Now, device info shows more
-print("A much larger set of device infor includes:", device1.info)
+print("A much larger set of device info includes:", device1.info)
 
 # Run some commands on your device
 device1.reboot()
