@@ -19,16 +19,21 @@ for device in devices:
 for directory in directories:
     print(directory.name)
 
-# Or, to find pa paricular device, you can search
+# Or, to find a paricular device, you can search
 # by name, IP address, or MAC
 device1 = devices.find(name="ITC080027B8A48E")
-device2 = devices.find(ip="192.168.56.101")
-device3 = devices.find(mac="080027B8A48E")
-device3.name
+device2 = devices.find(ip="192.168.56.104")
+#device3 = devices.find(mac="080027B8A48E")
+print("device1 IP address is", device1.ip)
+print("device2 name is", device2.name)
+
+# Check if your device is online like this
+print("Is device1 online?", device1.online)
+print("Is device2 online?", device2.online)
 
 # You can find a directory by name
 my_directory = directories.find(name="Portland")
-my_directory.name
+print("my_directory name is", my_directory.name)
 
 # Now that you have both a device and a directory,
 # you can move the device into that directory
@@ -36,22 +41,21 @@ device1.move(my_directory)
 
 # Get some additional information about your device
 device1.get_info()
-device1.info
+print("A smaller set of device info includes:", device1.info)
 
 # Get more detailed information
 device1.get_info(detailed=True)
 # Now, device info shows more
-device1.info
+print("A much larger set of device infor includes:", device1.info)
 
-# Run some command on your device
+# Run some commands on your device
 device1.reboot()
 device1.shutdown()
 device1.wakeup()
 device1.settings2tc()
-device1.factory()
+#device1.factory()
 
 # For now, when you factory a device
 # you should retrieve all devices again to have a
 # valid list
-
 ```

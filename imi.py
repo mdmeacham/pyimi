@@ -19,12 +19,21 @@ class Device:
         self.info = None
         self.detailed_retrieved = False
         self.imi = imi
+        self._online = False
 
     def get_info(self, detailed=False):
         if self.info == None or (detailed == True and self.detailed_retrieved == False):
             self.info = self.imi.request_info(self.id, detailed)
             if detailed:
                 self.detailed_retrieved = True
+    
+    @property
+    def online(self):
+        self._check_status()
+        return self._online
+
+    def _check_status(self):
+        self._online = self.imi.request_info(self.id, check_status=True)['online']
     
     def reboot(self):
         return self.imi.request_command('reboot', self.id)
@@ -118,7 +127,12 @@ class IMI:
     def request_directories(self):
         return self.make_request(requests.get, end_of_url='/umsapi/v3/directories/tcdirectories')
     
-    def request_info(self, id, detailed=False):
-        url_string = '/umsapi/v3/thinclients/{id}{query}'.format(id=str(id), 
-            query='?facets=details' if detailed else '')
+    def request_info(self, id, detailed=False, check_status=False):
+        query = ''
+        if detailed:
+            query = '?facets=details'
+        elif check_status:
+            query = '?facets=online'
+
+        url_string = '/umsapi/v3/thinclients/{id}{query}'.format(id=str(id), query=query)
         return self.make_request(requests.get, end_of_url=url_string)
