@@ -1,7 +1,7 @@
 A python library for accessing IGEL's IMI
 
 ``` {.sourceCode .python}
-from imi import IMI, Devices, Directories
+from igel import IMI, Devices, Directories
 
 # First, create your IMI session
 imi = IMI(server='192.168.56.12', user='igel', password='igel123')
