@@ -1,7 +1,4 @@
-A python library for accessing IGEL's IMI
-
-``` {.sourceCode .python}
-from imi import IMI, Devices, Directories
+from imi import IMI, Devices, Device, Directories, Directory
 
 # First, create your IMI session
 imi = IMI(server='192.168.56.12', user='igel', password='igel123')
@@ -58,4 +55,7 @@ device1.settings2tc()
 # For now, when you factory a device
 # you should retrieve all devices again to have a
 # valid list
-```
+
+    
+    
+
