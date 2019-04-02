@@ -1,7 +1,7 @@
 A python library for accessing IGEL's IMI
 
 ``` {.sourceCode .python}
-from igel import IMI, Devices, Directories
+from igel import IMI, Devices, Directories, Profiles
 
 # First, create your IMI session
 imi = IMI(server='192.168.56.12', user='igel', password='igel123')
@@ -12,12 +12,18 @@ devices = Devices(imi)
 # and also a list of your directories
 directories = Directories(imi)
 
-# you can iterate through the devices and directories
+# and also a list of your Profiles
+profiles = Profiles(imi)
+
+# you can iterate through the retreived items
 for device in devices:
     print(device.name)
 
 for directory in directories:
     print(directory.name)
+
+for profile in profiles:
+    print(profile.name)
 
 # Or, to find a paricular device, you can search
 # by name, IP address, or MAC
