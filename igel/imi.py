@@ -14,30 +14,27 @@ class IMI:
             password = None):
 
         self.verify = verify
-        self.url_host_port = 'https://' + server + ':' + str(port)
+        self.url = 'https://{server}:{port}/umsapi/v3/'.format(server=server, port=str(port))
         self.headers = {'content-type': 'application/json'}
-        self.headers['Cookie'] = self.make_request(requests.post, end_of_url='/umsapi/v3/login', auth=HTTPBasicAuth(user, password))['message']
+        self.headers['Cookie'] = self.make_request(requests.post, end_of_url='login', auth=HTTPBasicAuth(user, password))['message']
 
     def make_request(self, requests_method=None, data=None, end_of_url=None, auth=None):
-        url_string = self.url_host_port + end_of_url
-        response = requests_method(url_string, verify=self.verify, data=json.dumps(data), headers=self.headers, auth=auth)
+        url = '{url}{end}'.format(url=self.url, end=end_of_url)
+        response = requests_method(url, verify=self.verify, data=json.dumps(data), headers=self.headers, auth=auth)
         return response.json()        
     
     def request_command(self, command, device_id):
-        url_string = '/umsapi/v3/thinclients?command={command}'.format(command=command)
+        end_of_url = 'thinclients?command={command}'.format(command=command)
         data = [{"id": str(device_id), "type": "tc"}]
-        return self.make_request(requests.post, data=data, end_of_url=url_string)
+        return self.make_request(requests.post, data=data, end_of_url=end_of_url)
 
     def request_move(self, directory_id, device_id):
-        url_string = '/umsapi/v3/directories/tcdirectories/{id}?operation=move'.format(id=str(directory_id))
+        end_of_url = 'tcdirectories/{id}?operation=move'.format(id=str(directory_id))
         data = [{"id": str(device_id), "type": "tc"}]
-        return self.make_request(requests.put, data=data, end_of_url=url_string)
+        return self.make_request(requests.put, data=data, end_of_url=end_of_url)
 
-    def request_devices(self):
-        return self.make_request(requests.get, end_of_url='/umsapi/v3/thinclients')
-
-    def request_directories(self):
-        return self.make_request(requests.get, end_of_url='/umsapi/v3/directories/tcdirectories')
+    def request_items(self, end_of_url=None):
+        return self.make_request(requests.get, end_of_url=end_of_url)
     
     def request_info(self, id, detailed=False, check_status=False):
         query = ''
@@ -46,5 +43,5 @@ class IMI:
         elif check_status:
             query = '?facets=online'
 
-        url_string = '/umsapi/v3/thinclients/{id}{query}'.format(id=str(id), query=query)
-        return self.make_request(requests.get, end_of_url=url_string)
+        end_of_url = 'thinclients/{id}{query}'.format(id=str(id), query=query)
+        return self.make_request(requests.get, end_of_url=end_of_url)

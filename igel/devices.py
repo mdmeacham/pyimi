@@ -45,7 +45,7 @@ class Devices:
     def __init__(self, imi, filter=None):
         self.imi = imi
         self.devices = []
-        for item in self.imi.request_devices():
+        for item in self.imi.request_items(end_of_url='thinclients/'):
             self.devices.append(Device(item, self.imi))
     
     def __iter__(self):

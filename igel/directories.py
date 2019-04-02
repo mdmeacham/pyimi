@@ -8,7 +8,7 @@ class Directories:
     def __init__(self, imi, filter=None):
         self.imi = imi
         self.directories = []
-        for item in self.imi.request_directories():
+        for item in self.imi.request_items(end_of_url='directories/tcdirectories/'):
             self.directories.append(Directory(item, self.imi))
 
     def __iter__(self):
