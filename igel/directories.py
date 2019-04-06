@@ -1,8 +1,13 @@
 class Directory:
     def __init__(self, imi_data, imi):
+        self.imi = imi
         self.id = imi_data['id']
         self.name = imi_data['name']
         self.parent_id = imi_data['parentID']
+
+    def assign(self, profile):
+        return self.imi.assign_profile(profile.id, self)
+
 
 class Directories:
     def __init__(self, imi, filter=None):

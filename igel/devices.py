@@ -41,6 +41,10 @@ class Device:
     def move(self, directory):
         return self.imi.request_move(directory.id, self.id)
 
+    def assign(self, profile):
+        return self.imi.assign_profile(profile.id, self)
+
+
 class Devices:
     def __init__(self, imi, filter=None):
         self.imi = imi
