@@ -50,6 +50,10 @@ browser_profile = profiles.find(name='Browser')
 device1.assign(browser_profile)
 my_directory.assign(browser_profile)
 
+# And then you can unassign a profile like this
+device1.unassign(browser_profile)
+my_directory.unassign(browser_profile)
+
 
 # Get some additional information about your device
 device1.get_info()

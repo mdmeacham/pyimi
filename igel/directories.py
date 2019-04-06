@@ -6,7 +6,10 @@ class Directory:
         self.parent_id = imi_data['parentID']
 
     def assign(self, profile):
-        return self.imi.assign_profile(profile.id, self)
+        return self.imi.assign_unassign_profile('assign', profile.id, self)
+
+    def unassign(self, profile):
+        return self.imi.assign_unassign_profile('unassign', profile.id, self)
 
 
 class Directories:

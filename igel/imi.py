@@ -22,8 +22,6 @@ class IMI:
 
     def make_request(self, requests_method=None, data=None, end_of_url=None, auth=None):
         url = '{url}{end}'.format(url=self.url, end=end_of_url)
-        print('URL:', url)
-        print('data', data)
         response = requests_method(url, verify=self.verify, data=json.dumps(data), headers=self.headers, auth=auth)
         return response.json()        
     
@@ -37,7 +35,7 @@ class IMI:
         data = [{"id": str(device_id), "type": "tc"}]
         return self.make_request(requests.put, data=data, end_of_url=end_of_url)
 
-    def assign_profile(self, profile_id=None, to=None):
+    def assign_unassign_profile(self, operation=None, profile_id=None, to=None):
         if isinstance(to, Directory):
             to_str = 'tcdirectories'
             to_type = 'tcdirectory'
@@ -45,8 +43,13 @@ class IMI:
             to_str = 'thinclients'
             to_type = 'tc'
         end_of_url = 'profiles/{id}/assignments/{to}/'.format(id=str(profile_id), to=to_str)
-        data = [{"assignee": {"id": str(profile_id), "type": "profile"}, "receiver": {"id": str(to.id), "type": to_type}}]
-        return self.make_request(requests.put, data=data, end_of_url=end_of_url)
+        if operation == 'assign':
+            end_of_url = 'profiles/{id}/assignments/{to}/'.format(id=str(profile_id), to=to_str)
+            data = [{"assignee": {"id": str(profile_id), "type": "profile"}, "receiver": {"id": str(to.id), "type": to_type}}]
+            return self.make_request(requests.put, data=data, end_of_url=end_of_url)
+        else:
+            end_of_url = 'profiles/{id}/assignments/{to}/{to_id}'.format(id=str(profile_id), to=to_str, to_id=str(to.id))
+            return self.make_request(requests.delete, end_of_url=end_of_url)
 
     def request_items(self, end_of_url=None):
         return self.make_request(requests.get, end_of_url=end_of_url)
