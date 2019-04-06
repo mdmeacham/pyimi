@@ -45,6 +45,12 @@ print("my_directory name is", my_directory.name)
 # you can move the device into that directory
 device1.move(my_directory)
 
+# Here's how you assign a profile to a device or a directory
+browser_profile = profiles.find(name='Browser')
+device1.assign(browser_profile)
+my_directory.assign(browser_profile)
+
+
 # Get some additional information about your device
 device1.get_info()
 print("A smaller set of device info includes:", device1.info)
