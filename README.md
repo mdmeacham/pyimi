@@ -2,9 +2,18 @@ A python library for accessing IGEL's IMI
 
 ``` {.sourceCode .python}
 from igel import IMI, Devices, Directories, Profiles
+from igel import IMIAuthError, IMIConnectionError
+import sys
 
 # First, create your IMI session
-imi = IMI(server='192.168.56.12', user='igel', password='igel123')
+try:
+    imi = IMI(server='192.168.56.12', user='igel', password='igel#123')
+except IMIAuthError as err:
+    print(err)
+    sys.exit(1)
+except IMIConnectionError as err:
+    print(err)
+    sys.exit(1)
 
 # retrieve a list of your devices
 devices = Devices(imi)

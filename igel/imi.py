@@ -3,6 +3,8 @@ from requests.auth import HTTPBasicAuth
 import json
 from .directories import Directory
 from .devices import Device
+from .exceptions import IMIAuthError, IMIConnectionError
+import sys
 
 requests.packages.urllib3.disable_warnings()
 
@@ -18,7 +20,15 @@ class IMI:
         self.verify = verify
         self.url = 'https://{server}:{port}/umsapi/v3/'.format(server=server, port=str(port))
         self.headers = {'content-type': 'application/json'}
-        self.headers['Cookie'] = self.make_request(requests.post, end_of_url='login', auth=HTTPBasicAuth(user, password))['message']
+        try:
+            response = self.make_request(requests.post, end_of_url='login', auth=HTTPBasicAuth(user, password))
+            if response['message'].startswith('Invalid Login'):
+                raise IMIAuthError('IMI Authorization failed')
+            self.headers['Cookie'] = response['message']
+        except IMIAuthError as err:
+            raise err
+        except:
+            raise IMIConnectionError('Connection to IMI failed')
 
     def make_request(self, requests_method=None, data=None, end_of_url=None, auth=None):
         url = '{url}{end}'.format(url=self.url, end=end_of_url)
