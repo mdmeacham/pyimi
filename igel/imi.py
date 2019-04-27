@@ -40,9 +40,13 @@ class IMI:
         data = [{"id": str(device_id), "type": "tc"}]
         return self.make_request(requests.post, data=data, end_of_url=end_of_url)
 
-    def request_move(self, directory_id, device_id):
-        end_of_url = 'tcdirectories/{id}?operation=move'.format(id=str(directory_id))
-        data = [{"id": str(device_id), "type": "tc"}]
+    def request_move(self, directory_id, thing_to_move):
+        end_of_url = 'directories/tcdirectories/{id}?operation=move'.format(id=str(directory_id))
+        if isinstance(thing_to_move, Device):
+            thing_type = "tc"
+        elif isinstance(thing_to_move, Directory):
+            thing_type = "tcdirectory"
+        data = [{"id": str(thing_to_move.id), "type": thing_type}]
         return self.make_request(requests.put, data=data, end_of_url=end_of_url)
 
     def assign_unassign_profile(self, operation=None, profile_id=None, to=None):

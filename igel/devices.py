@@ -1,3 +1,5 @@
+from .exceptions import MoveError
+
 class Device:
     def __init__(self, imi_data, imi):
         self.id = imi_data['id']
@@ -39,7 +41,12 @@ class Device:
         return self.imi.request_command('settings2tc', self.id)
     
     def move(self, directory):
-        return self.imi.request_move(directory.id, self.id)
+        if not directory:
+            raise MoveError('Unable to move device into invalid directory')
+        try:
+            return self.imi.request_move(directory.id, self)
+        except:
+            raise MoveError('Unable to move device')
 
     def assign(self, profile):
         return self.imi.assign_unassign_profile('assign', profile.id, self)
@@ -62,8 +69,15 @@ class Devices:
     
     def find(self, name=None, ip=None, mac=None):
         if name:
-            return [device for device in self.devices if device.name == name][0]
-        if ip:
-            return [device for device in self.devices if device.ip == ip][0]
-        if mac:
-            return [device for device in self.devices if device.mac == mac][0]
+            key = 'name'
+            value = name
+        elif ip:
+            key = 'ip'
+            value = ip
+        elif mac:
+            key = 'mac'
+            value = mac
+        try:
+            return [device for device in self.devices if getattr(device, key) == value][0]
+        except:
+            return None

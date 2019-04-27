@@ -1,3 +1,6 @@
+from .exceptions import MoveError
+
+
 class Directory:
     def __init__(self, imi_data, imi):
         self.imi = imi
@@ -10,6 +13,14 @@ class Directory:
 
     def unassign(self, profile):
         return self.imi.assign_unassign_profile('unassign', profile.id, self)
+
+    def move(self, directory):
+        if not directory:
+            raise MoveError('Unable to move directory into invalid directory')
+        try:
+            return self.imi.request_move(directory.id, self)
+        except:
+            raise MoveError('Unable to move directory')
 
 
 class Directories:
@@ -27,4 +38,8 @@ class Directories:
 
     def find(self, name=None):
         if name:
-            return [directory for directory in self.directories if directory.name == name][0]
+            try:
+                return [directory for directory in self.directories if directory.name == name][0]
+            except:
+                pass
+        return None

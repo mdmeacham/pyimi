@@ -2,7 +2,7 @@ A python library for accessing IGEL's IMI
 
 ``` {.sourceCode .python}
 from igel import IMI, Devices, Directories, Profiles
-from igel import IMIAuthError, IMIConnectionError
+from igel import IMIAuthError, IMIConnectionError, MoveError
 import sys
 
 # First, create your IMI session
@@ -39,8 +39,12 @@ for profile in profiles:
 device1 = devices.find(name="ITC080027B8A48E")
 device2 = devices.find(ip="192.168.56.104")
 #device3 = devices.find(mac="080027B8A48E")
-print("device1 IP address is", device1.ip)
-print("device2 name is", device2.name)
+
+if device1:
+    print("device1 IP address is", device1.ip)
+
+if device2:
+    print("device2 name is", device2.name)
 
 # Check if your device is online like this
 print("Is device1 online?", device1.online)
@@ -48,11 +52,25 @@ print("Is device2 online?", device2.online)
 
 # You can find a directory by name
 my_directory = directories.find(name="Portland")
-print("my_directory name is", my_directory.name)
+if my_directory:
+    print("Found directory")
+else:
+    print("directory was not found")
 
 # Now that you have both a device and a directory,
 # you can move the device into that directory
-device1.move(my_directory)
+try:
+    device1.move(my_directory)
+except MoveError as err:
+    print(err)
+
+# And you can also move a device directory into another directory
+my_directory2 = directories.find(name="Bend")
+try:
+    my_directory2.move(my_directory)
+except MoveError as err:
+    print(err)
+
 
 # Here's how you assign a profile to a device or a directory
 browser_profile = profiles.find(name='Browser')
