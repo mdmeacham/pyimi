@@ -9,3 +9,7 @@ class IMIAuthError(Exception):
 class MoveError(Exception):
     def __init__(self, message):
         self.message = message
+
+class CreateError(Exception):
+    def __init__(self, message):
+        self.message = message

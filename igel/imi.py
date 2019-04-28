@@ -68,6 +68,11 @@ class IMI:
     def request_items(self, end_of_url=None):
         return self.make_request(requests.get, end_of_url=end_of_url)
     
+    def request_create(self, name=None):
+        end_of_url = 'directories/tcdirectories/'
+        data = {"name": name}
+        return self.make_request(requests.put, data=data, end_of_url=end_of_url)
+    
     def request_info(self, id, detailed=False, check_status=False):
         query = ''
         if detailed:

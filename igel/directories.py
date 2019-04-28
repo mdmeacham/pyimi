@@ -1,4 +1,4 @@
-from .exceptions import MoveError
+from .exceptions import MoveError, CreateError
 
 
 class Directory:
@@ -29,6 +29,14 @@ class Directories:
         self.directories = []
         for item in self.imi.request_items(end_of_url='directories/tcdirectories/'):
             self.directories.append(Directory(item, self.imi))
+    
+    def create(self, name=None):
+        if not name:
+            raise CreateError("Must provide name of object to create")
+        try:
+            return self.imi.request_create(name)
+        except:
+            raise CreateError("Unable to create new object") 
 
     def __iter__(self):
         return iter(self.directories)
