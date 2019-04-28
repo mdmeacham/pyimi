@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="igel",
-    version="0.0.1",
+    version="0.0.2",
     author="Mike Meacham",
     author_email="mdmeacham@gmail.com",
     description="A python library for accessing IGEL\'s IMI",

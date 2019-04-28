@@ -1,4 +1,18 @@
-A python library for accessing IGEL's IMI
+# A python library for accessing IGEL's IMI
+
+# Dependancies
+This library depends on the Python requests library.  Install requests with:
+
+``` {.sourceCode .python}
+pip install requests
+```
+# Installation
+After installing requests, install this library like this:
+``` {.sourceCode .python}
+pip install igel
+```
+
+# Some example code
 
 ``` {.sourceCode .python}
 from igel import IMI, Devices, Directories, Profiles
