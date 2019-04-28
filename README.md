@@ -2,7 +2,7 @@ A python library for accessing IGEL's IMI
 
 ``` {.sourceCode .python}
 from igel import IMI, Devices, Directories, Profiles
-from igel import IMIAuthError, IMIConnectionError, MoveError
+from igel import IMIAuthError, IMIConnectionError, MoveError, CreateError
 import sys
 
 # First, create your IMI session
@@ -56,6 +56,13 @@ if my_directory:
     print("Found directory")
 else:
     print("directory was not found")
+
+# Create a new directory for devices like this
+try:
+    directories.create("Vancouver")
+except CreateError as err:
+    print(err)
+
 
 # Now that you have both a device and a directory,
 # you can move the device into that directory
