@@ -1,4 +1,4 @@
-name = "igel"
+name = "pyimi"
 
 import sys
 

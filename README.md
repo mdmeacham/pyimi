@@ -15,19 +15,11 @@ pip install igel
 # Some example code
 
 ``` {.sourceCode .python}
-from igel import IMI, Devices, Directories, Profiles
-from igel import IMIAuthError, IMIConnectionError, MoveError, CreateError
+from pyimi import IMI, Devices, Directories, Profiles
 import sys
 
 # First, create your IMI session
-try:
-    imi = IMI(server='192.168.56.12', user='igel', password='igel#123')
-except IMIAuthError as err:
-    print(err)
-    sys.exit(1)
-except IMIConnectionError as err:
-    print(err)
-    sys.exit(1)
+imi = IMI(server='192.168.56.12', user='igel', password='igel#123')
 
 # retrieve a list of your devices
 devices = Devices(imi)
@@ -72,26 +64,15 @@ else:
     print("directory was not found")
 
 # Create a new directory for devices like this
-try:
-    directories.create("Vancouver")
-except CreateError as err:
-    print(err)
-
+directories.create("Vancouver")
 
 # Now that you have both a device and a directory,
 # you can move the device into that directory
-try:
-    device1.move(my_directory)
-except MoveError as err:
-    print(err)
+device1.move(my_directory)
 
 # And you can also move a device directory into another directory
 my_directory2 = directories.find(name="Bend")
-try:
-    my_directory2.move(my_directory)
-except MoveError as err:
-    print(err)
-
+my_directory2.move(my_directory)
 
 # Here's how you assign a profile to a device or a directory
 browser_profile = profiles.find(name='Browser')
