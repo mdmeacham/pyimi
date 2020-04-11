@@ -75,6 +75,8 @@ else:
 
 # Create a new directory for devices like this
 directories.create("Vancouver")
+# update the directories variable since there's a new dirctory
+directories = Directories(imi)
 
 # Now that you have both a device and a directory,
 # you can move the device into that directory
