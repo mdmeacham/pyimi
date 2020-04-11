@@ -1,23 +1,32 @@
-# A python library for accessing IGEL's IMI
+# pyimi
 
-# Dependancies
-This library depends on the Python requests library.  Install requests with:
+pyimi is a python library for accessing IGEL's IMI.  
 
-``` {.sourceCode .python}
-pip install requests
+### Overview
+  - Query for information about your IGEL endpoints
+  - Take actions such as reboot, shutdown, wakeup, send UMS settings and factory reset
+  - Assign profiles, move devices, create directories
+  - Query for asset inventory information (peripherals attached to the endpoints USB or bluetooth interface)
+
+### Dependencies
+pyimi depends on the Python requests library:
+
+* [Python Requests] - Requests is an elegant and simple HTTP library for Python, built for human beings.
+
+### Installation
+Install the requests library like this.
+
+```sh
+$ pip install requests
 ```
-# Installation
-After installing requests, install this library like this:
-``` {.sourceCode .python}
-pip install pyimi
+Next, install pyimi itself like this
+```sh
+$ pip install pyimi
 ```
 
-# Some example code
-
-``` {.sourceCode .python}
+### Some example code
+```python
 from pyimi import IMI, Devices, Directories, Profiles
-import sys
-
 # First, create your IMI session
 imi = IMI(server='192.168.56.12', user='igel', password='igel#123')
 
@@ -45,7 +54,6 @@ for profile in profiles:
 device1 = devices.find(name="ITC080027B8A48E")
 device2 = devices.find(ip="192.168.56.104")
 #device3 = devices.find(mac="080027B8A48E")
-
 if device1:
     print("device1 IP address is", device1.ip)
 
@@ -104,3 +112,14 @@ device1.settings2tc()
 # you should retrieve all devices again to have a
 # valid list
 ```
+
+License
+----
+
+MIT
+
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+
+
+
+   [Python Requests]: <https://requests.readthedocs.io/en/master/>

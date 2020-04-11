@@ -4,4 +4,4 @@ __pycache__
 *.pyc
 dist
 build
-igel.egg-info
+pyimi.egg-info
