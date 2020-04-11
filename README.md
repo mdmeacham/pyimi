@@ -121,7 +121,9 @@ for asset in device1.assets:
 
 # Factory reset a device
 device1.factory()
-
+# For now, when you factory a device
+# you should retrieve all devices again to have a
+# valid list
 
 # retrieve a list of your assets through Asset Inventory Tracker
 assets = Assets(imi)
@@ -137,9 +139,7 @@ for asset in assets:
         print(history['ctime'], history,"\n")
     print()
 
-# For now, when you factory a device
-# you should retrieve all devices again to have a
-# valid list
+
 ```
 
 License
