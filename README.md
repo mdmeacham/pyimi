@@ -50,10 +50,12 @@ for profile in profiles:
     print(profile.name)
 
 # Or, to find a paricular device, you can search
-# by name, IP address, or MAC
+# by name, IP address, or MAC, or UMS assigned id
 device1 = devices.find(name="ITC080027B8A48E")
 device2 = devices.find(ip="192.168.56.104")
-#device3 = devices.find(mac="080027B8A48E")
+device3 = devices.find(mac="080027B8A48E")
+device4 = devices.find(id="35591")
+
 if device1:
     print("device1 IP address is", device1.ip)
 
@@ -106,7 +108,34 @@ device1.reboot()
 device1.shutdown()
 device1.wakeup()
 device1.settings2tc()
-#device1.factory()
+
+# If this device has an EMP (Enterprise Mgmt Pack) license,
+# query for it's Asset Inventory Tracker information.
+device_assets = device1.assets
+print("Assets for thin client", device1.name)
+for asset in device1.assets:
+    print("asset name:", asset.name, "asset id", asset.id)
+    print("history of this asset on this device")
+    for history in asset.history:
+        print(history['ctime'], history, "\n")
+
+# Factory reset a device
+device1.factory()
+
+
+# retrieve a list of your assets through Asset Inventory Tracker
+assets = Assets(imi)
+
+# you can iterate through the retreived items
+for asset in assets:
+    print("Name of asset:", asset.name)
+    print("Info about asset")
+    for info in asset.info:
+        print(info,"\n")
+    print("History of asset")
+    for history in asset.history:
+        print(history['ctime'], history,"\n")
+    print()
 
 # For now, when you factory a device
 # you should retrieve all devices again to have a
