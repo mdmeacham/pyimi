@@ -1,6 +1,6 @@
 # pyimi
 
-pyimi is an unsupported, yet useful, python library for accessing IGEL's IMI.  
+pyimi is an **unsupported**, yet useful, python library for accessing IGEL's IMI.  
 
 ### Overview
   - Query for information about your IGEL endpoints
