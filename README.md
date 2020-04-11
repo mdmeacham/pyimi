@@ -26,7 +26,7 @@ $ pip install pyimi
 
 ### Some example code
 ```python
-from pyimi import IMI, Devices, Directories, Profiles
+from pyimi import IMI, Devices, Directories, Profiles, Assets
 # First, create your IMI session
 imi = IMI(server='192.168.56.12', user='igel', password='igel#123')
 
