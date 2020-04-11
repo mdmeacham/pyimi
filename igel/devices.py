@@ -1,4 +1,5 @@
 from .exceptions import MoveError
+from .assets import Asset
 
 class Device:
     def __init__(self, imi_data, imi):
@@ -25,6 +26,17 @@ class Device:
     def _check_status(self):
         self._online = self.imi.request_info(self.id, check_status=True)['online']
     
+    @property
+    def assets(self):
+        self._get_assets()
+        return self._assets
+
+    def _get_assets(self):
+        assets = self.imi.request_tc_asset_info(self.id)['assetinfos']
+        self._assets = []
+        for asset in assets:
+            self._assets.append(Asset(asset, self.imi))
+
     def reboot(self):
         return self.imi.request_command('reboot', self.id)
     
@@ -67,7 +79,7 @@ class Devices:
     def __getitem__(self, index):
         return self.devices[index]
     
-    def find(self, name=None, ip=None, mac=None):
+    def find(self, name=None, ip=None, mac=None, id=None):
         if name:
             key = 'name'
             value = name
@@ -77,6 +89,9 @@ class Devices:
         elif mac:
             key = 'mac'
             value = mac
+        elif id:
+            key = 'id'
+            value = id
         try:
             return [device for device in self.devices if getattr(device, key) == value][0]
         except:

@@ -82,3 +82,15 @@ class IMI:
 
         end_of_url = 'thinclients/{id}{query}'.format(id=str(id), query=query)
         return self.make_request(requests.get, end_of_url=end_of_url)
+    
+    def request_asset_history(self, id):
+        end_of_url = 'assethistory/assets/{id}'.format(id=str(id))
+        return self.make_request(requests.get, end_of_url=end_of_url)
+
+    def request_asset_info(self, id):
+        end_of_url = 'assetinfo/assets/{id}'.format(id=str(id))
+        return self.make_request(requests.get, end_of_url=end_of_url)
+
+    def request_tc_asset_info(self, id):
+        end_of_url = 'assetinfo/thinclients/{id}'.format(id=str(id))
+        return self.make_request(requests.get, end_of_url=end_of_url)

@@ -11,3 +11,4 @@ from .exceptions import IMIAuthError, IMIConnectionError, MoveError, CreateError
 from .directories import Directories, Directory
 from .devices import Devices, Device
 from .profiles import Profiles, Profile
+from .assets import Assets, Asset
