@@ -9,7 +9,7 @@ pip install requests
 # Installation
 After installing requests, install this library like this:
 ``` {.sourceCode .python}
-pip install igel
+pip install pyimi
 ```
 
 # Some example code
