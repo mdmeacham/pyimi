@@ -17,11 +17,11 @@ pyimi depends on the Python requests library:
 Install the requests library like this.
 
 ```sh
-$ pip install requests
+$ sudo pip install requests
 ```
 Next, install pyimi itself like this
 ```sh
-$ pip install pyimi
+$ sudo pip install pyimi
 ```
 
 ### Some example code
