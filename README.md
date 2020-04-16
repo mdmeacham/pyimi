@@ -142,7 +142,7 @@ device1.costCenter = "Anyone but us"
 device1.comment = "no comment!!!"
 device1.assetID = "123456789"
 device1.inserviceDate = "01/21/20"
-device1.inserviceDate = "01/21/20"
+device1.serialNumber = "3495712"
 
 print("Comment for this device", device1.comment)
 print("Asset ID for this device", device1.assetID)
