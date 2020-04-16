@@ -16,12 +16,11 @@ class IMI:
             verify = False,
             user = None,
             password = None):
-
         self.verify = verify
         self.url = 'https://{server}:{port}/umsapi/v3/'.format(server=server, port=str(port))
         self.headers = {'content-type': 'application/json'}
         try:
-            response = self.make_request(requests.post, end_of_url='login', auth=HTTPBasicAuth(user, password))
+            response = self.make_request(method='post', end_of_url='login', auth=HTTPBasicAuth(user, password))
             if response['message'].startswith('Invalid Login'):
                 raise IMIAuthError('IMI Authorization failed')
             self.headers['Cookie'] = response['message']
@@ -30,11 +29,20 @@ class IMI:
         except:
             raise IMIConnectionError('Connection to IMI failed')
 
-    def make_request(self, requests_method=None, data=None, end_of_url=None, auth=None):
+    def make_request(self, method=None, data=None, end_of_url=None, auth=None):
+        if method == 'get':
+            requests_method = requests.get
+        elif method == 'post':
+            requests_method = requests.post
+        elif method == 'put':
+            requests_method = requests.put
+        elif method == 'delete':
+            requests_method = requests.delete
+
         url = '{url}{end}'.format(url=self.url, end=end_of_url)
         response = requests_method(url, verify=self.verify, data=json.dumps(data), headers=self.headers, auth=auth)
         return response.json()        
-    
+'''    
     def request_command(self, command, device_id):
         end_of_url = 'thinclients?command={command}'.format(command=command)
         data = [{"id": str(device_id), "type": "tc"}]
@@ -94,3 +102,4 @@ class IMI:
     def request_tc_asset_info(self, id):
         end_of_url = 'assetinfo/thinclients/{id}'.format(id=str(id))
         return self.make_request(requests.get, end_of_url=end_of_url)
+'''
