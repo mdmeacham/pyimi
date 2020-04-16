@@ -3,14 +3,114 @@ from .assets import Asset
 
 class Device:
     def __init__(self, imi_data, imi):
+        print("from init", imi_data)
         self.id = imi_data['id']
-        self.name = imi_data['name']
+        self._name = imi_data['name']
         self.ip = imi_data['lastIP']
         self.mac = imi_data['mac']
         self.detailed_retrieved = False
         self._imi = imi
         self._info = None
         self._online = False
+
+    @property
+    def serialNumber(self):
+        if 'serialNumber' in self.info:
+            return self.info['serialNumber']
+        else:
+            return ''
+    
+    @serialNumber.setter
+    def serialNumber(self, serialNumber):
+        data = {"serialNumber": serialNumber}
+        self._set_tc_setting(data)
+
+    @property
+    def inserviceDate(self):
+        if 'inserviceDate' in self.info:
+            return self.info['inserviceDate']
+        else:
+            return ''
+    
+    @inserviceDate.setter
+    def inserviceDate(self, inserviceDate):
+        data = {"inserviceDate": inserviceDate}
+        self._set_tc_setting(data)
+
+    @property
+    def assetID(self):
+        if 'assetID' in self.info:
+            return self.info['assetID']
+        else:
+            return ''
+    
+    @assetID.setter
+    def assetID(self, assetID):
+        data = {"assetID": assetID}
+        self._set_tc_setting(data)
+
+    @property
+    def comment(self):
+        if 'comment' in self.info:
+            return self.info['comment']
+        else:
+            return ''
+    
+    @comment.setter
+    def comment(self, comment):
+        data = {"comment": comment}
+        self._set_tc_setting(data)
+
+    @property
+    def costCenter(self):
+        if 'costCenter' in self.info:
+            return self.info['costCenter']
+        else:
+            return ''
+    
+    @costCenter.setter
+    def costCenter(self, costCenter):
+        data = {"costCenter": costCenter}
+        self._set_tc_setting(data)
+
+    @property
+    def department(self):
+        if 'department' in self.info:
+            return self.info['department']
+        else:
+            return ''
+    
+    @department.setter
+    def department(self, department):
+        data = {"department": department}
+        self._set_tc_setting(data)
+
+    @property
+    def site(self):
+        if 'site' in self.info:
+            return self.info['site']
+        else:
+            return ''
+    
+    @site.setter
+    def site(self, site):
+        data = {"site": site}
+        self._set_tc_setting(data)
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, name):
+        data = {"name": name}
+        self._set_tc_setting(data)
+        self._name = name
+
+    def _set_tc_setting(self,data):
+        end_of_url = '/thinclients/{id}'.format(id=str(self.id))
+        result = self._imi.make_request('put', data=data, end_of_url=end_of_url)
+        print(result)
 
     @property
     def info(self):

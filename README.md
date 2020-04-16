@@ -135,7 +135,20 @@ for asset in assets:
         print(history['ctime'], history,"\n")
     print()
 
+# Set extra information tags on your devices
+device1.name = "IGEL-1"
+device1.site = "Downtown"
+device1.costCenter = "Anyone but us"
+device1.comment = "no comment!!!"
+device1.assetID = "123456789"
+device1.inserviceDate = "01/21/20"
+device1.inserviceDate = "01/21/20"
 
+print("Comment for this device", device1.comment)
+print("Asset ID for this device", device1.assetID)
+print("This device is located at", device1.site)
+print("And this place paid for it", device1.costCenter)
+)
 ```
 
 License
