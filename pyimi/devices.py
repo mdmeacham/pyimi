@@ -3,7 +3,6 @@ from .assets import Asset
 
 class Device:
     def __init__(self, imi_data, imi):
-        print("from init", imi_data)
         self.id = imi_data['id']
         self._name = imi_data['name']
         self.ip = imi_data['lastIP']
@@ -206,7 +205,16 @@ class Devices:
         elif id:
             key = 'id'
             value = id
+        else:
+            return None
         try:
             return [device for device in self.devices if getattr(device, key) == value][0]
         except:
             return None
+
+    def filter(self, info_key, info_value):
+        try:
+            return [device for device in self.devices if device.info[info_key] == info_value]
+        except:
+            return None
+
