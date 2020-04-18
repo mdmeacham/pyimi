@@ -62,6 +62,15 @@ if device1:
 if device2:
     print("device2 name is", device2.name)
 
+# You can also filter the device list to return a
+# sub list of devices whose info property has a
+# matching key/value to the filter.
+# Note: to find the possible keys for filter, check
+# the dictionary returned by the device info property.
+filtered_devices = devices.filter("site", "Downtown")
+for device in filtered_devices:
+    print(device.name)
+
 # Check if your device is online like this
 print("Is device1 online?", device1.online)
 print("Is device2 online?", device2.online)

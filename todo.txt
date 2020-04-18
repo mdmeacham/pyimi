@@ -1,3 +1,2 @@
-- Add support for setting name, site, department, costCenter, comment, assetID, inserviceDate, serialNumber
 - When you create a directory, return the new directory to caller
-- Return lists in find functions when unique items are not guaranteed to be returned.
+- Make returned object of devices filter method be an instance of Devices.
