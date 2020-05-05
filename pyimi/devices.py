@@ -4,10 +4,10 @@ from .assets import Asset
 class Device:
     def __init__(self, imi_data, imi):
         self.id = imi_data['id']
+        self.unitid = imi_data['unitID']
         self._name = imi_data['name']
         self.ip = imi_data['lastIP']
         self.mac = imi_data['mac']
-        self.detailed_retrieved = False
         self._imi = imi
         self._info = None
         self._online = False
@@ -192,7 +192,7 @@ class Devices:
     def __getitem__(self, index):
         return self.devices[index]
 
-    def find(self, name=None, ip=None, mac=None, id=None):
+    def find(self, name=None, ip=None, mac=None, id=None, unitid=None):
         if name:
             key = 'name'
             value = name
@@ -205,6 +205,9 @@ class Devices:
         elif id:
             key = 'id'
             value = id
+        elif unitid:
+            key = 'unitid'
+            value = unitid
         else:
             return None
         try:

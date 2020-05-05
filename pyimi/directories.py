@@ -42,7 +42,7 @@ class Directories:
             data = {"name": name}
             return self._imi.make_request(method='put', data=data, end_of_url=end_of_url)
         except:
-            raise CreateError("Unable to create new object") 
+            raise CreateError("Unable to create new object")
 
     def __iter__(self):
         return iter(self.directories)
@@ -50,10 +50,16 @@ class Directories:
     def __getitem__(self, index):
         return self.directories[index]
 
-    def find(self, name=None):
+    def find(self, name=None, id=None):
         if name:
-            try:
-                return [directory for directory in self.directories if directory.name == name][0]
-            except:
-                pass
-        return None
+            key = 'name'
+            value = name
+        elif id:
+            key = 'id'
+            value = id
+        else:
+            return None
+        try:
+            return [directory for directory in self.directories if getattr(directory, key) == value][0]
+        except:
+            return None
