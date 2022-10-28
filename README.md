@@ -1,30 +1,36 @@
 # pyimi
 
-pyimi is an **unsupported**, yet useful, python library for accessing IGEL's IMI.  
+pyimi is an **unsupported**, yet useful, python library for accessing IGEL's IMI.
 
 ### Overview
-  - Query for information about your IGEL endpoints
-  - Take actions such as reboot, shutdown, wakeup, send UMS settings and factory reset
-  - Assign profiles, move devices, create directories
-  - Query for asset inventory information (peripherals attached to the endpoints USB or bluetooth interface)
+
+- Query for information about your IGEL endpoints
+- Take actions such as reboot, shutdown, wakeup, send UMS settings and factory reset
+- Assign profiles, move devices, create directories
+- Query for asset inventory information (peripherals attached to the endpoints USB or bluetooth interface)
 
 ### Dependencies
+
 pyimi depends on the Python requests library:
 
-* [Python Requests] - Requests is an elegant and simple HTTP library for Python, built for human beings.
+- [Python Requests] - Requests is an elegant and simple HTTP library for Python, built for human beings.
 
 ### Installation
+
 Install the requests library like this.
 
 ```sh
 $ pip install requests
 ```
+
 Next, install pyimi itself like this
+
 ```sh
 $ pip install pyimi
 ```
 
 ### Some example code
+
 ```python
 from pyimi import IMI, Devices, Directories, Profiles, Assets
 # First, create your IMI session
@@ -158,15 +164,16 @@ print("Asset ID for this device", device1.assetID)
 print("This device is located at", device1.site)
 print("And this place paid for it", device1.costCenter)
 
+# retrieve custom device attributes for a device
+for attribute in device1.attributes:
+    print(attribute['name'], ':', attribute['value'])
+
+
 ```
 
-License
-----
+## License
 
 MIT
 
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
-
-
-   [Python Requests]: <https://requests.readthedocs.io/en/master/>
+[//]: # "These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax"
+[python requests]: https://requests.readthedocs.io/en/master/
