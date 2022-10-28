@@ -1,6 +1,7 @@
 from .exceptions import MoveError
 from .assets import Asset
 
+
 class Device:
     def __init__(self, imi_data, imi):
         self.id = imi_data['id']
@@ -10,15 +11,13 @@ class Device:
         self.mac = imi_data['mac']
         self._imi = imi
         self._info = None
+        self._attributes = None
         self._online = False
 
     @property
     def serialNumber(self):
-        if 'serialNumber' in self.info:
-            return self.info['serialNumber']
-        else:
-            return ''
-    
+        return self.info['serialNumber']
+
     @serialNumber.setter
     def serialNumber(self, serialNumber):
         data = {"serialNumber": serialNumber}
@@ -26,11 +25,8 @@ class Device:
 
     @property
     def inserviceDate(self):
-        if 'inserviceDate' in self.info:
-            return self.info['inserviceDate']
-        else:
-            return ''
-    
+        return self.info['inserviceDate']
+
     @inserviceDate.setter
     def inserviceDate(self, inserviceDate):
         data = {"inserviceDate": inserviceDate}
@@ -38,11 +34,8 @@ class Device:
 
     @property
     def assetID(self):
-        if 'assetID' in self.info:
-            return self.info['assetID']
-        else:
-            return ''
-    
+        return self.info['assetID']
+
     @assetID.setter
     def assetID(self, assetID):
         data = {"assetID": assetID}
@@ -50,11 +43,8 @@ class Device:
 
     @property
     def comment(self):
-        if 'comment' in self.info:
-            return self.info['comment']
-        else:
-            return ''
-    
+        return self.info['comment']
+
     @comment.setter
     def comment(self, comment):
         data = {"comment": comment}
@@ -62,11 +52,8 @@ class Device:
 
     @property
     def costCenter(self):
-        if 'costCenter' in self.info:
-            return self.info['costCenter']
-        else:
-            return ''
-    
+        return self.info['costCenter']
+
     @costCenter.setter
     def costCenter(self, costCenter):
         data = {"costCenter": costCenter}
@@ -74,11 +61,8 @@ class Device:
 
     @property
     def department(self):
-        if 'department' in self.info:
-            return self.info['department']
-        else:
-            return ''
-    
+        return self.info['department']
+
     @department.setter
     def department(self, department):
         data = {"department": department}
@@ -86,11 +70,8 @@ class Device:
 
     @property
     def site(self):
-        if 'site' in self.info:
-            return self.info['site']
-        else:
-            return ''
-    
+        return self.info['site']
+
     @site.setter
     def site(self, site):
         data = {"site": site}
@@ -99,16 +80,17 @@ class Device:
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, name):
         data = {"name": name}
         self._set_tc_setting(data)
         self._name = name
 
-    def _set_tc_setting(self,data):
+    def _set_tc_setting(self, data):
         end_of_url = '/thinclients/{id}'.format(id=str(self.id))
-        result = self._imi.make_request('put', data=data, end_of_url=end_of_url)
+        result = self._imi.make_request(
+            'put', data=data, end_of_url=end_of_url)
         print(result)
 
     @property
@@ -116,9 +98,21 @@ class Device:
         self._get_info()
         return self._info
 
+    @property
+    def attributes(self):
+        self._get_attributes()
+        return self._attributes
+
     def _get_info(self):
         end_of_url = 'thinclients/{id}?facets=details'.format(id=str(self.id))
-        self._info = self._imi.make_request(method='get', end_of_url=end_of_url)                
+        self._info = self._imi.make_request(
+            method='get', end_of_url=end_of_url)
+
+    def _get_attributes(self):
+        end_of_url = 'thinclients/{id}?facets=deviceattributes'.format(
+            id=str(self.id))
+        self._attributes = self._imi.make_request(
+            method='get', end_of_url=end_of_url)['deviceAttributes']
 
     @property
     def online(self):
@@ -126,7 +120,8 @@ class Device:
         return self._online
 
     def _check_status(self):
-        self._online = self._imi.request_info(self.id, check_status=True)['online']
+        self._online = self._imi.request_info(
+            self.id, check_status=True)['online']
 
     @property
     def assets(self):
@@ -135,7 +130,8 @@ class Device:
 
     def _get_assets(self):
         end_of_url = 'assetinfo/thinclients/{id}'.format(id=str(self.id))
-        assets = self._imi.make_request(method='get', end_of_url=end_of_url)['assetinfos']
+        assets = self._imi.make_request(
+            method='get', end_of_url=end_of_url)['assetinfos']
         self._assets = []
         for asset in assets:
             self._assets.append(Asset(asset, self._imi))
@@ -161,7 +157,8 @@ class Device:
         return self._run_command('settings2tc')
 
     def move(self, directory):
-        end_of_url = 'directories/tcdirectories/{id}?operation=move'.format(id=str(directory.id))
+        end_of_url = 'directories/tcdirectories/{id}?operation=move'.format(
+            id=str(directory.id))
         data = [{"id": str(self.id), "type": "tc"}]
         if not directory:
             raise MoveError('Unable to move device into invalid directory')
@@ -171,13 +168,17 @@ class Device:
             raise MoveError('Unable to move device')
 
     def assign(self, profile):
-        end_of_url = 'profiles/{id}/assignments/thinclients/'.format(id=str(profile.id))
-        data = [{"assignee": {"id": str(profile.id), "type": "profile"}, "receiver": {"id": str(self.id), "type": "tc"}}]
+        end_of_url = 'profiles/{id}/assignments/thinclients/'.format(
+            id=str(profile.id))
+        data = [{"assignee": {"id": str(profile.id), "type": "profile"}, "receiver": {
+            "id": str(self.id), "type": "tc"}}]
         return self._imi.make_request(method='put', data=data, end_of_url=end_of_url)
 
     def unassign(self, profile):
-        end_of_url = 'profiles/{id}/assignments/thinclients/{to_id}'.format(id=str(profile.id), to_id=str(self.id))
+        end_of_url = 'profiles/{id}/assignments/thinclients/{to_id}'.format(
+            id=str(profile.id), to_id=str(self.id))
         return self._imi.make_request(method='delete', end_of_url=end_of_url)
+
 
 class Devices:
     def __init__(self, imi, filter=None):
@@ -220,4 +221,3 @@ class Devices:
             return [device for device in self.devices if device.info[info_key] == info_value]
         except:
             return None
-
