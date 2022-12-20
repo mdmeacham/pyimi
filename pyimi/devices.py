@@ -120,8 +120,11 @@ class Device:
         return self._online
 
     def _check_status(self):
-        self._online = self._imi.request_info(
-            self.id, check_status=True)['online']
+        end_of_url = 'thinclients/{id}?facets=online'.format(
+            id=str(self.id)
+        )
+        self._online = self._imi.make_request(
+            method='get', end_of_url=end_of_url)['online']
 
     @property
     def assets(self):
