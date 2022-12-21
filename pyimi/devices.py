@@ -103,6 +103,10 @@ class Device:
         self._get_attributes()
         return self._attributes
 
+    @property
+    def lastContact(self):
+        return self.info['lastContact']
+
     def _get_info(self):
         end_of_url = 'thinclients/{id}?facets=details'.format(id=str(self.id))
         self._info = self._imi.make_request(

@@ -81,6 +81,9 @@ for device in filtered_devices:
 print("Is device1 online?", device1.online)
 print("Is device2 online?", device2.online)
 
+# Check when the device last contacted UMS
+print("device1 contacted UMS at", device1.lastContact)
+
 # You can find a directory by name
 my_directory = directories.find(name="Portland")
 if my_directory:
